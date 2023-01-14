@@ -9,7 +9,7 @@ app.get('/', (_, res) => {
     res.send('Hello drones world!');
 })
 
-app.get('/drones', async (req, res) => {
+app.get('/drones', async (_, res) => {
     const drones = await getDrones()
 
     res.send(drones)
