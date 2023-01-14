@@ -29,3 +29,12 @@ export interface Report {
 export interface DroneReport {
     report: Report
 }
+
+export interface MappedDrone {
+    serialNumber: string
+    model: string
+    manufacturer: string
+    y: number
+    x: number
+    snapshotTimestamp: string // maybe this should be a Date
+}
