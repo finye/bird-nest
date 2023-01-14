@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import { parseXmlToJson } from './helpers';
+import { getClosestDrone, isInsideNoFlyZone, parseXmlToJson } from './helpers';
 import { Drone, MappedDrone } from './types';
 
 const BASE_URL = 'https://assignments.reaktor.com/birdnest';
@@ -27,6 +27,8 @@ const getMappedDroneList = (response: AxiosResponse<any, any>) => {
         const y = Number(positionY);
 
         return {
+            isInsideNoFlyZone: isInsideNoFlyZone(x, y),
+            closestDistance: Math.round(getClosestDrone(x, y)),
             serialNumber,
             model,
             manufacturer,

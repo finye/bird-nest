@@ -1,5 +1,5 @@
 import xml2js from 'xml2js';
-import { DroneReport, Report } from './types';
+import { Drone, DroneReport, Report } from './types';
 
 export const parseXmlToJson = (xml: string): Report => {
     let json = {}
@@ -14,6 +14,21 @@ export const parseXmlToJson = (xml: string): Report => {
 
     return json as Report;
 }
+
+const noFlyZoneRadiusLimit: number = 100_000;
+
+export const getClosestDrone = (x: number, y: number): number => {
+    const center = 250_000;
+
+    return Math.sqrt(Math.pow(x - center, 2) + Math.pow(y - center, 2)) / 1000;
+}
+
+export const isInsideNoFlyZone = (x: number, y: number): boolean => {
+    const closestDrone = getClosestDrone(x, y);
+
+    return closestDrone < (noFlyZoneRadiusLimit / 1000)
+}
+
 
 export const isWithinTheLastTenMinutes = (snapShotTimestamp: string) => {
     // get the last 10 minutes
