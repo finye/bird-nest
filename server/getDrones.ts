@@ -9,7 +9,9 @@ const getDrones = async () => {
         const response: AxiosResponse = await axios.get(`${BASE_URL}/drones`);
         const { mappedDrones } = getMappedDroneList(response);
 
-        return getDronePilotList(mappedDrones);
+        const drones = await getDronePilotList(mappedDrones)
+
+        return { drones }
     } catch (error) {
         console.error(error)
     }
