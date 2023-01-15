@@ -1,6 +1,8 @@
-import React, { ReactElement, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios'
 import './App.css';
+import DronesVisualization from './components/DronesVisualization';
+import Pilots from './components/Pilots';
 
 // TODO: use shared types in client and server
 interface Pilot {
@@ -12,7 +14,7 @@ interface Pilot {
   pilotId: string
 }
 
-interface MappedDrone {
+export interface MappedDrone {
   serialNumber: string
   model: string
   manufacturer: string
@@ -42,55 +44,12 @@ const DronesApp = () => {
     }
   }
 
-  const hasViolators = drones && drones.some(drone => drone.isInsideNoFlyZone)
-
-  console.log(drones);
-
-
-  const Pilots = (): ReactElement => {
-    if (!hasViolators) {
-      return <p>No pilot in the NFZ!</p>;
-    }
-
-    return (
-      <div>
-        <h2>Pilots in the NFZ</h2>
-
-        <table>
-          <colgroup span={4}></colgroup>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone no.</th>
-            <th>Closest distance(in meters)</th>
-          </tr>
-          {
-            drones && drones.map(drone => {
-              return (
-                drone.isInsideNoFlyZone && (
-                  <tr>
-                    <td>{drone.pilot?.firstName} {drone.pilot?.lastName}</td>
-                    <td>{drone.pilot?.email}</td>
-                    <td>{drone.pilot?.phoneNumber}</td>
-                    <td>{drone.closestDistance}</td>
-                  </tr>
-                )
-              )
-            })
-          }
-        </table>
-      </div>
-    )
-  }
-
   return (
     <div className="App">
       <header className="App-header">
-        <div>
-          {/* <canvas ref={canvasRef} width={500} height={500}/> */}
-        </div>
+        <DronesVisualization drones={drones} />
 
-        <Pilots />
+        <Pilots drones={drones} />
       </header>
 
     </div>

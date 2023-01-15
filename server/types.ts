@@ -37,4 +37,6 @@ export interface MappedDrone {
     y: number
     x: number
     snapshotTimestamp: string // maybe this should be a Date
+    isInsideNoFlyZone: boolean
+    closestDistance: number
 }
