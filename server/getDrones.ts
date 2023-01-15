@@ -18,7 +18,18 @@ const getDrones = async () => {
 
 }
 
-const getMappedDroneList = (response: AxiosResponse<any, any>) => {
+const getDronePilotList = async (drones: MappedDrone[]) => {
+    return await Promise.all(drones.map(async (drone: MappedDrone) => {
+        const { data: pilot } = await axios.get(`${BASE_URL}/pilots/${drone.serialNumber}`);
+
+        return {
+            ...drone,
+            pilot
+        };
+    }))
+}
+
+const getMappedDroneList = (response: AxiosResponse) => {
     const { capture } = parseXmlToJson(response.data);
     const snapshotTimestamp = capture['$'].snapshotTimestamp;
     const drones = capture.drone;
@@ -41,17 +52,6 @@ const getMappedDroneList = (response: AxiosResponse<any, any>) => {
     })
 
     return { mappedDrones };
-}
-
-const getDronePilotList = async (drones: MappedDrone[]) => {
-    return await Promise.all(drones.map(async (drone: MappedDrone) => {
-        const { data: pilot } = await axios.get(`${BASE_URL}/pilots/${drone.serialNumber}`);
-
-        return {
-            ...drone,
-            pilot
-        };
-    }))
 }
 
 export default getDrones;
