@@ -4,7 +4,7 @@ import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
 
 const app = express()
-const PORT = 3001 || process.env.NETLIFY_FUNCTIONS_PROXY
+const PORT = process.env.NETLIFY_FUNCTIONS_PROXY
 
 let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
