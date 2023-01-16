@@ -1,11 +1,17 @@
 {
   "name": "bird-nest",
+  "workspaces": [
+    "client",
+    "server"
+  ],
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "server": "npm install --prefix server && npm run start:server --prefix server",
-    "client": "npm install --prefix client && npm run build --prefix client",
-    "deploy": "npm run client && npm run server"
+    "server": "npm run start:server --workspace=server",
+    "client": "npm run start:client --workspace=client",
+    "start": "npm run start --workspace=client",
+    "deploy": "npm run server && npm run client",
+    "build": "npm run start --workspace=client"
   },
   "repository": {
     "type": "git",
