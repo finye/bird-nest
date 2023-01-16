@@ -40,3 +40,7 @@ export interface MappedDrone {
     isInsideNoFlyZone: boolean
     closestDistance: number
 }
+
+export interface DronesPilotList {
+    drones: MappedDrone[]
+}
