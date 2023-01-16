@@ -15,7 +15,7 @@
   },
   "scripts": {
     "start:client": "react-scripts start",
-    "build": "BUILD_PATH='../build' react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "start": "concurrently \"npm --prefix ../server run start:server\" \"npm run start:client\""
