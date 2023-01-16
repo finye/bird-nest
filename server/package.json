@@ -6,6 +6,8 @@
   "scripts": {
     "build": "tsc",
     "start:server": "nodemon server.ts",
+    "build:client": "npm run build --prefix ../client",
+    "deploy": "npm run build:client && npm run start:server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
