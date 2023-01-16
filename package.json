@@ -1,0 +1,21 @@
+{
+  "name": "bird-nest",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "server": "npm run start:server --prefix server",
+    "client": "npm run build --prefix client",
+    "deploy": "npm run client && npm run server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finye/bird-nest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/finye/bird-nest/issues"
+  },
+  "homepage": "https://github.com/finye/bird-nest#readme"
+}
