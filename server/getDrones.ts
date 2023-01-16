@@ -1,21 +1,19 @@
 import axios, { AxiosResponse } from 'axios'
-import { getClosestDrone, isInsideNoFlyZone, parseXmlToJson } from './helpers';
-import { Drone, MappedDrone } from './types';
+import { getClosestDrone, isInsideNoFlyZone, isWithinTheLastTenMinutes, parseXmlToJson } from './helpers';
+import { Drone, DronesPilotList, MappedDrone } from './types';
 
 const BASE_URL = 'https://assignments.reaktor.com/birdnest';
 
-const getDrones = async () => {
-    try {
-        const response: AxiosResponse = await axios.get(`${BASE_URL}/drones`);
-        const { mappedDrones } = getMappedDroneList(response);
+const getDrones = async (dronesInDb: DronesPilotList) => {
 
-        const drones = await getDronePilotList(mappedDrones)
+    const response: AxiosResponse = await axios.get(`${BASE_URL}/drones`);
+    const { mappedDrones } = getMappedDroneList(response);
 
-        return { drones }
-    } catch (error) {
-        console.error(error)
-    }
+    const drones = await getDronePilotList(mappedDrones)
 
+    const _filteredDrones = filteredDrones(dronesInDb, drones)
+
+    return _filteredDrones
 }
 
 const getDronePilotList = async (drones: MappedDrone[]) => {
@@ -52,6 +50,32 @@ const getMappedDroneList = (response: AxiosResponse) => {
     })
 
     return { mappedDrones };
+}
+
+
+const filteredDrones = (dronesInDb: DronesPilotList, dronesFromApi: MappedDrone[]): {
+    drones: MappedDrone[]
+} => {
+    const isValidDroneInDb = dronesInDb.drones.filter((drone: MappedDrone) => isWithinTheLastTenMinutes(drone.snapshotTimestamp))
+
+    // filter duplicate drones which already exists in DRONE_PILOTS_DB
+    const filteredDronesFromApi = dronesFromApi.reduce((acc: MappedDrone[], drone: MappedDrone) => {
+        const isANewViolatorDrone = drone.isInsideNoFlyZone // true
+        const isViolatorDroneInDb = isValidDroneInDb.find((d: MappedDrone) => d.serialNumber === drone.serialNumber)
+
+        if (!isViolatorDroneInDb && isANewViolatorDrone) {
+            return [...acc, drone]
+        }
+
+        return acc;
+    }, [])
+
+    // combine unique drones from the db and the drones from the api
+    const combinedDrones = isValidDroneInDb.concat(filteredDronesFromApi) // .filter((drone: MappedDrone) => drone.isInsideNoFlyZone)
+    // const combinedDrones = filteredDrones
+    return {
+        drones: combinedDrones
+    }
 }
 
 export default getDrones;

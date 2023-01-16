@@ -28,12 +28,10 @@ export const isInsideNoFlyZone = (x: number, y: number): boolean => {
 
     return closestDrone < (noFlyZoneRadiusLimit / 1000)
 }
-
-
 export const isWithinTheLastTenMinutes = (snapShotTimestamp: string) => {
-    // get the last 10 minutes
-    const lastTenMinutes = new Date().getTime() - 10 * 60 * 1000;
+    const tenMinutesAgo = new Date();
+    // get the last 10 minutes of data
+    tenMinutesAgo.setMinutes(tenMinutesAgo.getMinutes() - 10);
 
-    // checks if snapShotTimestamp is within the last 10 minutes
-    return new Date(snapShotTimestamp).getTime() > lastTenMinutes;
+    return new Date(snapShotTimestamp) >= tenMinutesAgo
 }
