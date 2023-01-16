@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "server": "npm install && npm run start:server --prefix server",
-    "client": "npm install && npm run build --prefix client",
+    "server": "npm install --prefix server && npm run start:server --prefix server",
+    "client": "npm install --prefix client && npm run build --prefix client",
     "deploy": "npm run client && npm run server"
   },
   "repository": {
