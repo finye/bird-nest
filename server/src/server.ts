@@ -4,17 +4,17 @@ import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
 
 const app = express()
-const PORT = 3001;
+const PORT = process.env.PORT || 3001
 
 let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
 };
 
 
-app.use(express.static(path.resolve(__dirname, "../client/build")));
+app.use(express.static(path.resolve(__dirname, "../../client/build")));
 
 app.get('/', (_, res) => {
-    res.sendFile(path.join(__dirname, "../client/build", "index.html"));
+    res.sendFile(path.join(__dirname, "../../client/build", "index.html"));
 });
 
 app.get('/drones', async (_, res) => {
@@ -27,5 +27,5 @@ app.get('/drones', async (_, res) => {
 
 
 app.listen(PORT, () => {
-    console.log("server running in port 3001");
+    console.log(`server running in port ${PORT}`);
 })
