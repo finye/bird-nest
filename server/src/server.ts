@@ -4,7 +4,7 @@ import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
 
 const app = express()
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 
 let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
@@ -27,5 +27,5 @@ app.get('/drones', async (_, res) => {
 
 
 app.listen(PORT, () => {
-    console.log("server running in port 3001");
+    console.log(`server running in port ${PORT}`);
 })
