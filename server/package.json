@@ -14,6 +14,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express-sslify": "^1.2.2",
     "@types/ws": "^8.5.4",
     "@types/xml2js": "^0.4.11",
     "nodemon": "^2.0.20"
