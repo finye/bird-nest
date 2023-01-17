@@ -26,7 +26,7 @@ export interface MappedDrone {
   pilot?: Pilot
 }
 
-const URL = process.env.NODE_ENV === 'development' ? 'ws://localhost' : 'https://bird-nest-finnan.herokuapp.com'
+const URL = process.env.NODE_ENV === 'development' ? 'ws://localhost' : 'ws://bird-nest-finnan.herokuapp.com'
 
 const DronesApp = () => {
   const [drones, setDrones] = React.useState<MappedDrone[]>();
