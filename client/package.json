@@ -18,7 +18,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "concurrently \"npm --prefix ../server run start:server\" \"npm run start:client\""
+    "start": "concurrently \"npm --prefix ../server run start:server\" \"npm run start:client\"",
+    "postbuild": "node postbuild.js"
   },
   "eslintConfig": {
     "extends": [

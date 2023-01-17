@@ -9,9 +9,9 @@
   "scripts": {
     "server": "npm run start:server --workspace=server",
     "client": "npm run start:client --workspace=client",
-    "start": "npm run start --workspace=client",
+    "start": "npm run start:server --workspace=server",
     "deploy": "npm run server && npm run client",
-    "build": "npm run start --workspace=client"
+    "build": "npm run build --workspace=client"
   },
   "repository": {
     "type": "git",
