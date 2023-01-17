@@ -1,6 +1,8 @@
 import express from "express"
 import path from "path";
 import * as WebSocket from 'ws'
+
+import { EventEmitter } from 'events'
 // import * as sslify from 'express-sslify'
 import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
@@ -14,28 +16,39 @@ let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
 };
 
-let intervalId: NodeJS.Timer
 
 
 
+const refreshEmitter = new EventEmitter();
 
 
-socket.on('connection', (ws) => {
+let intervalId: NodeJS.Timer = setInterval(() => {
+    refreshEmitter.emit('refresh');
+}, 5000);
+
+
+const refreshData = async (ws: WebSocket.WebSocket) => {
+    const drones = await getDrones(DRONE_PILOTS_DB);
+
+    DRONE_PILOTS_DB = {
+        drones: drones.drones
+    }
+
+    console.log({ drones })
+    ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
+}
+
+
+
+socket.on('connection', async (ws) => {
     ws.on('message', (message) => {
         console.log('received: %s', message);
     });
 
 
-    intervalId = setInterval(async () => {
-        const drones = await getDrones(DRONE_PILOTS_DB);
-
-        DRONE_PILOTS_DB = {
-            drones: drones.drones
-        }
-
-        console.log({ drones })
-        ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
-    }, 5_000);
+    refreshEmitter.on('refresh', () => {
+        refreshData(ws)
+    });
 
     // ws.onopen = () => {
     //     intervalId = setInterval(async () => {
