@@ -26,11 +26,34 @@ export interface MappedDrone {
   pilot?: Pilot
 }
 
+const URL = process.env.NODE_ENV === 'development' ? 'ws://localhost' : 'https://bird-nest-finnan.herokuapp.com'
+
 const DronesApp = () => {
   const [drones, setDrones] = React.useState<MappedDrone[]>();
 
+  // useEffect(() => {
+  //   void getDrones();
+  // }, []);
+
+
   useEffect(() => {
-    void getDrones();
+    const socket = new WebSocket(URL + ':8080');
+
+    socket.onopen = () => {
+      console.log('connected');
+    }
+
+    socket.onmessage = (event) => {
+      const _drones = JSON.parse(event.data);
+
+      setDrones(_drones);
+    }
+
+    socket.onclose = () => {
+      console.log('disconnected');
+    }
+
+    return () => socket.close();
   }, []);
 
 
@@ -43,6 +66,8 @@ const DronesApp = () => {
       console.log(error);
     }
   }
+
+
 
   return (
     <div className="App">
