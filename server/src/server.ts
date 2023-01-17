@@ -1,7 +1,7 @@
 import express from "express"
 import path from "path";
-import * as sslify from 'express-sslify'
 import * as WebSocket from 'ws'
+import * as sslify from 'express-sslify'
 import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
 
