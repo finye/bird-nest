@@ -1,7 +1,7 @@
 import express from "express"
 import path from "path";
 import * as WebSocket from 'ws'
-import * as sslify from 'express-sslify'
+// import * as sslify from 'express-sslify'
 import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
 
@@ -31,7 +31,14 @@ socket.on('connection', (ws) => {
     }, 5000);
 })
 
-app.use(sslify.HTTPS({ trustProtoHeader: true }));
+// app.use(sslify.HTTPS({ trustProtoHeader: true }));
+
+app.use((req, res, next) => {
+    req.headers['x-forwarded-host'] = req.headers['host']
+    req.headers['host'] = 'bird-nest-finnan.herokuapp.com'
+
+    next()
+})
 
 app.use(express.static(path.resolve(__dirname, "../../client/build")));
 
