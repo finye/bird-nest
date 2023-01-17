@@ -14,21 +14,29 @@ let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
 };
 
+let intervalId
+
 socket.on('connection', (ws) => {
     ws.on('message', (message) => {
         console.log('received: %s', message);
     });
 
-    setInterval(async () => {
-        const drones = await getDrones(DRONE_PILOTS_DB);
+    ws.onopen = () => {
+        intervalId = setInterval(async () => {
+            const drones = await getDrones(DRONE_PILOTS_DB);
 
-        DRONE_PILOTS_DB = {
-            drones: drones.drones
-        }
+            DRONE_PILOTS_DB = {
+                drones: drones.drones
+            }
 
-        console.log({ drones })
-        ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
-    }, 5000);
+            console.log({ drones })
+            ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
+        }, 5_000);
+    }
+
+    ws.onclose = () => {
+        clearInterval(intervalId)
+    }
 })
 
 // app.use(sslify.HTTPS({ trustProtoHeader: true }));
