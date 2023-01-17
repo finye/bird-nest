@@ -1,5 +1,6 @@
 import express from "express"
 import path from "path";
+import * as sslify from 'express-sslify'
 import * as WebSocket from 'ws'
 import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
@@ -29,6 +30,8 @@ socket.on('connection', (ws) => {
         ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
     }, 5000);
 })
+
+app.use(sslify.HTTPS({ trustProtoHeader: true }));
 
 app.use(express.static(path.resolve(__dirname, "../../client/build")));
 
