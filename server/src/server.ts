@@ -14,27 +14,45 @@ let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
 };
 
-let intervalId
+let intervalId: NodeJS.Timer
+
+
+
+
 
 socket.on('connection', (ws) => {
     ws.on('message', (message) => {
         console.log('received: %s', message);
     });
 
-    ws.onopen = () => {
-        intervalId = setInterval(async () => {
-            const drones = await getDrones(DRONE_PILOTS_DB);
 
-            DRONE_PILOTS_DB = {
-                drones: drones.drones
-            }
+    intervalId = setInterval(async () => {
+        const drones = await getDrones(DRONE_PILOTS_DB);
 
-            console.log({ drones })
-            ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
-        }, 5_000);
-    }
+        DRONE_PILOTS_DB = {
+            drones: drones.drones
+        }
+
+        console.log({ drones })
+        ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
+    }, 5_000);
+
+    // ws.onopen = () => {
+    //     intervalId = setInterval(async () => {
+    //         const drones = await getDrones(DRONE_PILOTS_DB);
+
+    //         DRONE_PILOTS_DB = {
+    //             drones: drones.drones
+    //         }
+
+    //         console.log({ drones })
+    //         ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
+    //     }, 5_000);
+    // }
 
     ws.onclose = () => {
+        console.log('CLOSED');
+
         clearInterval(intervalId)
     }
 })

@@ -26,7 +26,7 @@ export interface MappedDrone {
   pilot?: Pilot
 }
 
-const URL = process.env.NODE_ENV === 'development' ? 'ws://localhost' : 'wss://bird-nest-finnan.herokuapp.com'
+const URL = process.env.NODE_ENV === 'development' ? 'ws://0.0.0.0' : 'wss://bird-nest-finnan.herokuapp.com'
 
 const DronesApp = () => {
   const [drones, setDrones] = React.useState<MappedDrone[]>();
@@ -53,7 +53,7 @@ const DronesApp = () => {
       console.log('disconnected');
     }
 
-    return () => socket.close();
+    // return () => socket.close();
   }, []);
 
   const getDrones = async () => {
