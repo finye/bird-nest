@@ -2,12 +2,12 @@
   "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "outDir": "build",
+    "outDir": "dist",
     "strict": true,
     "moduleResolution": "Node",
     "esModuleInterop": true,
   },
   "include": [
-    "./*.ts"
+    "src/"
   ]
 }
