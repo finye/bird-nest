@@ -39,6 +39,16 @@ export interface MappedDrone {
     snapshotTimestamp: string // maybe this should be a Date
     isInsideNoFlyZone: boolean
     closestDistance: number
+    pilot?: Pilot
+}
+
+interface Pilot {
+    createdDt: string
+    email: string
+    firstName: string
+    lastName: string
+    phoneNumber: string
+    pilotId: string
 }
 
 export interface DronesPilotList {

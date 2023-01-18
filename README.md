@@ -23,6 +23,9 @@ To run the server:
 To run both of the client and server in parellel: 
 `npm run start`
 
+To run the test in the server: 
+`npm run test`
+
 
 ![screenshot](/client/public/bird-nest-screenshot.png)
 
