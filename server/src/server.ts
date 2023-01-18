@@ -29,7 +29,7 @@ socketServer.on('connection', async (socket: io.Socket) => {
         console.log({ drones });
 
         socket.emit('drones', JSON.stringify(drones.drones))
-    }, 5_000);
+    }, 3_000);
 
     socket.on('disconnect', () => {
         console.log('disconnected');
