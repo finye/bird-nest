@@ -144,7 +144,7 @@ app.get('/drones', async (_, res) => {
     res.send(combinedDrones)
 })
 
-app.use(function (_, res, _) {
+app.use(function (_, res, __) {
     res.status(404).send("Sorry, that page doesn't exist!");
 });
 
