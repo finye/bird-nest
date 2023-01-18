@@ -53,7 +53,7 @@ const getMappedDroneList = (response: AxiosResponse) => {
 }
 
 
-const filteredDrones = (dronesInDb: DronesPilotList, dronesFromApi: MappedDrone[]): {
+export const filteredDrones = (dronesInDb: DronesPilotList, dronesFromApi: MappedDrone[]): {
     drones: MappedDrone[]
 } => {
     const isValidDroneInDb = dronesInDb.drones.filter((drone: MappedDrone) => isWithinTheLastTenMinutes(drone.snapshotTimestamp))
