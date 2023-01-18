@@ -1,7 +1,7 @@
 import express from "express"
 import path from "path";
-import * as io from 'socket.io';
-import * as http from 'http';
+// import * as io from 'socket.io';
+// import * as http from 'http';
 
 
 import { clearInterval } from 'timers'
@@ -16,18 +16,18 @@ import { DronesPilotList } from "./types";
 const app = express()
 const PORT = process.env.PORT || 3001
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
-const redis = require('redis');
-const Redis = require('@socket.io/redis-adapter');
+// const redis = require('redis');
+// const Redis = require('@socket.io/redis-adapter');
 
-const pubClient = redis.createClient();
-const subClient = pubClient.duplicate();
+// const pubClient = redis.createClient();
+// const subClient = pubClient.duplicate();
 
 
-const socketServer = new io.Server(server, {
-    path: '/drones'
-});
+// const socketServer = new io.Server(server, {
+//     path: '/drones'
+// });
 
 // const pubClient = new Redis.createClient({ host: 'localhost', port: 6379 });
 
@@ -38,35 +38,35 @@ let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
 };
 
-socketServer.adapter(Redis.createAdapter(pubClient, subClient));
+// socketServer.adapter(Redis.createAdapter(pubClient, subClient));
 
 
-socketServer.on('connection', async (socket: io.Socket) => {
-    console.log('connected');
+// socketServer.on('connection', async (socket: io.Socket) => {
+//     console.log('connected');
 
-    try {
+//     try {
 
-        const drones = await getDrones(DRONE_PILOTS_DB);
+//         // const drones = await getDrones(DRONE_PILOTS_DB);
 
-        DRONE_PILOTS_DB = {
-            drones: drones.drones
-        }
-
-
-        console.log({ drones });
+//         // DRONE_PILOTS_DB = {
+//         //     drones: drones.drones
+//         // }
 
 
-        socket.emit('drones', JSON.stringify(drones.drones))
-    } catch (error) {
-        console.error(error)
-    }
+//         // console.log({ drones });
 
-    socket.on('disconnect', () => {
-        console.log('disconnected');
 
-        // clearInterval(intervalId)
-    });
-});
+//         socket.emit('drones', '[{}]')
+//     } catch (error) {
+//         console.error(error)
+//     }
+
+//     socket.on('disconnect', () => {
+//         console.log('disconnected');
+
+//         // clearInterval(intervalId)
+//     });
+// });
 
 
 
@@ -149,6 +149,6 @@ app.use(function (_, res, __) {
 });
 
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`server running in port ${PORT}`);
 })
