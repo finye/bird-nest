@@ -45,24 +45,22 @@ socketServer.adapter(Redis.createAdapter(pubClient, subClient));
 socketServer.on('connection', async (socket: io.Socket) => {
     console.log('connected');
 
-    let intervalId: NodeJS.Timer = setInterval(async () => {
-        const drones = await getDrones(DRONE_PILOTS_DB);
+    const drones = await getDrones(DRONE_PILOTS_DB);
 
-        DRONE_PILOTS_DB = {
-            drones: drones.drones
-        }
-
-
-        console.log({ drones });
+    DRONE_PILOTS_DB = {
+        drones: drones.drones
+    }
 
 
-        socket.emit('drones', JSON.stringify(drones.drones))
-    }, 5_000);
+    console.log({ drones });
+
+
+    socket.emit('drones', JSON.stringify(drones.drones))
 
     socket.on('disconnect', () => {
         console.log('disconnected');
 
-        clearInterval(intervalId)
+        // clearInterval(intervalId)
     });
 });
 
@@ -121,12 +119,12 @@ socketServer.on('connection', async (socket: io.Socket) => {
 
 // app.use(sslify.HTTPS({ trustProtoHeader: true }));
 
-app.use((req, res, next) => {
-    req.headers['x-forwarded-host'] = req.headers['host']
-    req.headers['host'] = 'bird-nest-finnan.herokuapp.com'
+// app.use((req, res, next) => {
+//     req.headers['x-forwarded-host'] = req.headers['host']
+//     req.headers['host'] = 'bird-nest-finnan.herokuapp.com'
 
-    next()
-})
+//     next()
+// })
 
 app.use(express.static(path.resolve(__dirname, "../../client/build")));
 
