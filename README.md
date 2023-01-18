@@ -2,7 +2,7 @@
 A web application done as an assignment for Reaktor's internship🤞. THe project is a monorepo built using TypeScript. Nodejs on the server side and React for the frontend.
 
 
-The application will be available at https://bird-nest-finnan.herokuapp.com/.
+The application lives in https://bird-nest-finnan.herokuapp.com/.
 
 
 ## Scripts to run the app
