@@ -52,6 +52,10 @@ socketServer.on('connection', async (socket: io.Socket) => {
             drones: drones.drones
         }
 
+
+        console.log({ drones });
+
+
         socket.emit('drones', JSON.stringify(drones.drones))
     }, 5_000);
 
