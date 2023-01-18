@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import io from 'socket.io-client';
-// import axios from 'axios'
 import './App.css';
 import DronesVisualization from './components/DronesVisualization';
 import Pilots from './components/Pilots';
@@ -45,20 +44,6 @@ const DronesApp = () => {
       socket.off('drones');
     };
   }, []);
-
-  // useEffect(() => {
-  //   void getDrones();
-  // }, []);
-
-  // const getDrones = async () => {
-  //   try {
-  //     const { data } = await axios.get('/drones')
-
-  //     setDrones(data.drones);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
 
   return (
     <div className="App">
