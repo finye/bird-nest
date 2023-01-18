@@ -44,17 +44,22 @@ socketServer.adapter(Redis.createAdapter(pubClient, subClient));
 socketServer.on('connection', async (socket: io.Socket) => {
     console.log('connected');
 
-    const drones = await getDrones(DRONE_PILOTS_DB);
+    try {
 
-    DRONE_PILOTS_DB = {
-        drones: drones.drones
+        const drones = await getDrones(DRONE_PILOTS_DB);
+
+        DRONE_PILOTS_DB = {
+            drones: drones.drones
+        }
+
+
+        console.log({ drones });
+
+
+        socket.emit('drones', JSON.stringify(drones.drones))
+    } catch (error) {
+        console.error(error)
     }
-
-
-    console.log({ drones });
-
-
-    socket.emit('drones', JSON.stringify(drones.drones))
 
     socket.on('disconnect', () => {
         console.log('disconnected');
@@ -139,7 +144,11 @@ app.get('/drones', async (_, res) => {
     res.send(combinedDrones)
 })
 
+app.use(function (_, res, _) {
+    res.status(404).send("Sorry, that page doesn't exist!");
+});
 
-app.listen(PORT, () => {
+
+server.listen(PORT, () => {
     console.log(`server running in port ${PORT}`);
 })
