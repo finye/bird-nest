@@ -17,7 +17,7 @@ let DRONE_PILOTS_DB: DronesPilotList = {
 };
 
 socketServer.on('connection', async (socket: io.Socket) => {
-    console.log('connected');
+    console.log('connected to send violating drones');
 
     let intervalId: NodeJS.Timer = setInterval(async () => {
         const drones = await getDrones(DRONE_PILOTS_DB);
