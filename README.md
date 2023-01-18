@@ -9,8 +9,8 @@ The application will be available at https://bird-nest-finnan.herokuapp.com/.
 
 Make sure you have Node.js and NPM installed. 
 
-Install dependencies in both projects: 
-`npm install`
+Install dependencies for both projects by running the following command from the root level: 
+`npm run install-deps`
 
 To run the client: 
 `npm run client`
