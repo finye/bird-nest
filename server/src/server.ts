@@ -2,19 +2,36 @@ import express from "express"
 import path from "path";
 import * as io from 'socket.io';
 import * as http from 'http';
+
+
+import { clearInterval } from 'timers'
 // import * as WebSocket from 'ws'
 
 // import * as sslify from 'express-sslify'
 import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
 
+// const redis = require('@socket.io/redis-adapter')
+
 const app = express()
 const PORT = process.env.PORT || 3001
 
 const server = http.createServer(app);
+
+const redis = require('redis');
+const Redis = require('@socket.io/redis-adapter');
+
+const pubClient = redis.createClient();
+const subClient = pubClient.duplicate();
+const redisAdapter = new Redis({ pubClient, subClient });
+
+
 const socketServer = new io.Server(server, {
     path: '/drones'
 });
+
+// const pubClient = new Redis.createClient({ host: 'localhost', port: 6379 });
+
 
 // const socket = new WebSocket.Server({ port: 8080 });
 
@@ -22,8 +39,10 @@ let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
 };
 
+socketServer.adapter(Redis.createAdapter(pubClient, subClient));
 
-socketServer.on('connection', (socket: io.Socket) => {
+
+socketServer.on('connection', async (socket: io.Socket) => {
     console.log('connected');
 
     let intervalId: NodeJS.Timer = setInterval(async () => {

@@ -10,7 +10,6 @@
     "server": "npm run start:server --workspace=server",
     "client": "npm run start:client --workspace=client",
     "start:app": "npm run start:server --workspace=server",
-    "deploy": "npm run server && npm run client",
     "build": "npm run build --workspace=client",
     "start": "concurrently \"npm run server\" \"npm run client\""
   },
