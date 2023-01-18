@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build:server && npm run build:client"
+  functions = "server/dist"
+  publish = "client/build"
+
+[dev]
+  command = "npm run start:server"

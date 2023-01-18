@@ -14,6 +14,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express-sslify": "^1.2.2",
+    "@types/ws": "^8.5.4",
     "@types/xml2js": "^0.4.11",
     "nodemon": "^2.0.20"
   },
@@ -22,12 +24,18 @@
     "@babel/core": "^7.20.12",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.18.6",
+    "@socket.io/redis-adapter": "^8.0.1",
     "@types/express": "^4.17.15",
     "@types/node": "^18.11.18",
+    "@types/socket.io": "^3.0.2",
     "axios": "^1.2.2",
     "express": "^4.18.2",
+    "express-sslify": "^1.2.0",
+    "redis": "^4.5.1",
+    "socket.io": "^4.5.4",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4",
+    "ws": "^8.12.0",
     "xml2js": "^0.4.23"
   }
 }

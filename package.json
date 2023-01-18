@@ -9,9 +9,12 @@
   "scripts": {
     "server": "npm run start:server --workspace=server",
     "client": "npm run start:client --workspace=client",
-    "start": "npm run start:server --workspace=server",
-    "deploy": "npm run server && npm run client",
-    "build": "npm run build --workspace=client"
+    "start:app": "npm run start:server --workspace=server",
+    "build": "npm run build --workspace=client",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "build:server": "npm run build --workspace=server",
+    "build:client": "npm run build --workspace=client",
+    "start:server": "npm run start:server --workspace=server"
   },
   "repository": {
     "type": "git",
@@ -23,5 +26,8 @@
   "bugs": {
     "url": "https://github.com/finye/bird-nest/issues"
   },
-  "homepage": "https://github.com/finye/bird-nest#readme"
+  "homepage": "https://github.com/finye/bird-nest#readme",
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
 }
