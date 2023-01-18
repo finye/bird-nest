@@ -24,5 +24,5 @@ To run both of the client and server in parellel:
 `npm run start`
 
 
-![screenshot](/client/public/Bird-nest-UI.png)
+![screenshot](/client/public/bird-nest-screenshot.png)
 
