@@ -1,8 +1,9 @@
 import express from "express"
 import path from "path";
-import * as WebSocket from 'ws'
+import * as io from 'socket.io';
+import * as http from 'http';
+// import * as WebSocket from 'ws'
 
-import { EventEmitter } from 'events'
 // import * as sslify from 'express-sslify'
 import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
@@ -10,65 +11,90 @@ import { DronesPilotList } from "./types";
 const app = express()
 const PORT = process.env.PORT || 3001
 
-const socket = new WebSocket.Server({ port: 8080 });
+const server = http.createServer(app);
+const socketServer = new io.Server(server, {
+    path: '/drones'
+});
+
+// const socket = new WebSocket.Server({ port: 8080 });
 
 let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
 };
 
 
+socketServer.on('connection', (socket: io.Socket) => {
+    console.log('connected');
 
+    let intervalId: NodeJS.Timer = setInterval(async () => {
+        const drones = await getDrones(DRONE_PILOTS_DB);
 
-const refreshEmitter = new EventEmitter();
+        DRONE_PILOTS_DB = {
+            drones: drones.drones
+        }
 
+        socket.emit('drones', JSON.stringify(drones.drones))
+    }, 5_000);
 
-let intervalId: NodeJS.Timer = setInterval(() => {
-    refreshEmitter.emit('refresh');
-}, 5000);
-
-
-const refreshData = async (ws: WebSocket.WebSocket) => {
-    const drones = await getDrones(DRONE_PILOTS_DB);
-
-    DRONE_PILOTS_DB = {
-        drones: drones.drones
-    }
-
-    console.log({ drones })
-    ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
-}
-
-
-
-socket.on('connection', async (ws) => {
-    ws.on('message', (message) => {
-        console.log('received: %s', message);
-    });
-
-
-    refreshEmitter.on('refresh', () => {
-        refreshData(ws)
-    });
-
-    // ws.onopen = () => {
-    //     intervalId = setInterval(async () => {
-    //         const drones = await getDrones(DRONE_PILOTS_DB);
-
-    //         DRONE_PILOTS_DB = {
-    //             drones: drones.drones
-    //         }
-
-    //         console.log({ drones })
-    //         ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
-    //     }, 5_000);
-    // }
-
-    ws.onclose = () => {
-        console.log('CLOSED');
+    socket.on('disconnect', () => {
+        console.log('disconnected');
 
         clearInterval(intervalId)
-    }
-})
+    });
+});
+
+
+
+// const refreshData = async (ws: WebSocket.WebSocket) => {
+//     const drones = await getDrones(DRONE_PILOTS_DB);
+
+//     DRONE_PILOTS_DB = {
+//         drones: drones.drones
+//     }
+
+//     console.log({ drones })
+//     ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
+// }
+
+
+
+// socket.on('connection', async (ws) => {
+//     ws.on('message', (message) => {
+//         console.log('received: %s', message);
+//     });
+
+
+//     const refreshEmitter = new EventEmitter();
+
+
+//     let intervalId: NodeJS.Timer = setInterval(() => {
+//         refreshEmitter.emit('refresh');
+//     }, 5000);
+
+
+//     refreshEmitter.on('refresh', () => {
+//         refreshData(ws)
+//     });
+
+//     // ws.onopen = () => {
+//     //     intervalId = setInterval(async () => {
+//     //         const drones = await getDrones(DRONE_PILOTS_DB);
+
+//     //         DRONE_PILOTS_DB = {
+//     //             drones: drones.drones
+//     //         }
+
+//     //         console.log({ drones })
+//     //         ws.send(JSON.stringify(DRONE_PILOTS_DB.drones));
+//     //     }, 5_000);
+//     // }
+
+//     ws.onclose = () => {
+//         console.log('CLOSED');
+
+//         clearInterval(intervalId)
+//     }
+// })
 
 // app.use(sslify.HTTPS({ trustProtoHeader: true }));
 
@@ -94,6 +120,6 @@ app.get('/drones', async (_, res) => {
 })
 
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`server running in port ${PORT}`);
 })

@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import axios from 'axios'
+import io from 'socket.io-client';
 import './App.css';
 import DronesVisualization from './components/DronesVisualization';
 import Pilots from './components/Pilots';
@@ -26,45 +27,63 @@ export interface MappedDrone {
   pilot?: Pilot
 }
 
-const URL = process.env.NODE_ENV === 'development' ? 'ws://0.0.0.0' : 'wss://bird-nest-finnan.herokuapp.com'
+// const URL = process.env.NODE_ENV === 'development' ? 'ws://0.0.0.0' : 'wss://bird-nest-finnan.herokuapp.com'
+
+const socket = io({
+  path: '/drones'
+});
+
 
 const DronesApp = () => {
   const [drones, setDrones] = React.useState<MappedDrone[]>();
+
+  useEffect(() => {
+    socket.on('drones', (_drones: string) => {
+
+      setDrones(JSON.parse(_drones))
+    });
+
+    // Stop listening for emitted event drones when the component unmounts
+    return () => {
+      socket.off('drones');
+    };
+  }, []);
+
 
   // useEffect(() => {
   //   void getDrones();
   // }, []);
 
 
-  useEffect(() => {
-    const socket = new WebSocket(URL + ':8080');
+  // useEffect(() => {
+  //   const socket = new WebSocket(URL + ':8080');
 
-    socket.onopen = () => {
-      console.log('connected');
-    }
+  //   socket.onopen = () => {
+  //     console.log('connected');
+  //   }
 
-    socket.onmessage = (event) => {
-      const _drones = JSON.parse(event.data);
+  //   socket.onmessage = (event) => {
+  //     const _drones = JSON.parse(event.data);
 
-      setDrones(_drones);
-    }
+  //     setDrones(_drones);
+  //   }
 
-    socket.onclose = () => {
-      console.log('disconnected');
-    }
+  //   socket.onclose = () => {
+  //     console.log('disconnected');
+  //   }
 
-    // return () => socket.close();
-  }, []);
+  //   // return () => socket.close();
+  // }, []);
 
-  const getDrones = async () => {
-    try {
-      const { data } = await axios.get('/drones')
+  // const getDrones = async () => {
+  //   try {
+  //     const { data } = await axios.get('/drones')
 
-      setDrones(data.drones);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  //     setDrones(data.drones);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
   return (
     <div className="App">
