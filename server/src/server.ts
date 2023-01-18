@@ -38,7 +38,6 @@ socketServer.on('connection', async (socket: io.Socket) => {
     });
 });
 
-
 app.use(express.static(path.resolve(__dirname, "../../client/build")));
 
 app.get('/', (_, res) => {
