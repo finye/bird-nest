@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import axios from 'axios'
 import io from 'socket.io-client';
 import './App.css';
 import DronesVisualization from './components/DronesVisualization';
