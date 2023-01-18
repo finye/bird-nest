@@ -23,7 +23,6 @@ const Redis = require('@socket.io/redis-adapter');
 
 const pubClient = redis.createClient();
 const subClient = pubClient.duplicate();
-const redisAdapter = new Redis({ pubClient, subClient });
 
 
 const socketServer = new io.Server(server, {
@@ -141,6 +140,6 @@ app.get('/drones', async (_, res) => {
 })
 
 
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`server running in port ${PORT}`);
 })
