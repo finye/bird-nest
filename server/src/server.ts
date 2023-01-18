@@ -5,7 +5,6 @@ import * as http from 'http';
 import getDrones from "./getDrones";
 import { DronesPilotList } from "./types";
 
-const PORT = process.env.PORT || 3001
 const app = express()
 const server = http.createServer(app);
 const socketServer = new io.Server(server, {
@@ -15,6 +14,8 @@ const socketServer = new io.Server(server, {
 let DRONE_PILOTS_DB: DronesPilotList = {
     drones: [],
 };
+const PORT = process.env.PORT || 3001
+const REFRESH_RATE = 2_000
 
 socketServer.on('connection', async (socket: io.Socket) => {
     console.log('connected to send violating drones');
@@ -26,10 +27,8 @@ socketServer.on('connection', async (socket: io.Socket) => {
             drones: drones.drones
         }
 
-        console.log({ drones });
-
         socket.emit('drones', JSON.stringify(drones.drones))
-    }, 3_000);
+    }, REFRESH_RATE);
 
     socket.on('disconnect', () => {
         console.log('disconnected');

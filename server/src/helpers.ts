@@ -1,5 +1,5 @@
 import xml2js from 'xml2js';
-import { Drone, DroneReport, Report } from './types';
+import { DroneReport, Report } from './types';
 
 export const parseXmlToJson = (xml: string): Report => {
     let json = {}
