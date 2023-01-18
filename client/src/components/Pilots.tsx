@@ -24,10 +24,10 @@ const Pilots = ({ drones }: PilotsProps): ReactElement => {
                     <th>Phone no.</th>
                     <th>Closest distance(in meters)</th>
                 </tr>
-                {drones && drones.map(drone => {
+                {drones && drones.map((drone: MappedDrone, index) => {
                     return (
                         drone.isInsideNoFlyZone && (
-                            <tr>
+                            <tr key={`index-${index}`}>
                                 <td>{drone.pilot?.firstName} {drone.pilot?.lastName}</td>
                                 <td>{drone.pilot?.email}</td>
                                 <td>{drone.pilot?.phoneNumber}</td>

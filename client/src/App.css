@@ -39,10 +39,6 @@ td {
   border: 1px solid #fff;
 }
 
-td {
-  color: #f44336;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
